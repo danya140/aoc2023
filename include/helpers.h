@@ -108,11 +108,11 @@ inline bool containsAll(const std::string& str, const std::string& searchPattern
 /**
  * Create variable with current epoch time
  */
-#define START_TIMER(point) int point_##point = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+#define START_TIMER(point) int point_##point = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 
 /**
  * Calculate and print time between start point and current point
  */
-#define STOP_TIMER(point) int stop_point_##point = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count(); \
+#define STOP_TIMER(point) int stop_point_##point = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::system_clock::now().time_since_epoch()).count(); \
     std::cout << "Execution time for point " << #point << ": " << stop_point_##point - point_##point << std::endl; \
 
