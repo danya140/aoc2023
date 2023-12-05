@@ -160,7 +160,7 @@ long Almanac::srcToDst(long value, long index, const std::vector<Map>& map)
 {
     long dst = map[index].getMappedValue(value);
     index++;
-    if (index >= map.size() && index >= 1)
+    if (index >= map.size())
     {
         return dst;
     }
@@ -287,7 +287,6 @@ long Almanac::findLowestLocationInRange()
     std::reverse(maps.begin(), maps.end());
     long result = INT32_MAX;
 
-    long l = 0;
     START_TIMER(point_2)
     for (std::pair<long, long> pair : seedInRange)
     {
