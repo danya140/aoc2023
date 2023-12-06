@@ -17,33 +17,23 @@
  * Split string using delimiter
  * @return vector of string after split
  */
-inline std::vector<std::string> split(const std::string& str, char delimiter)
-{
-    std::vector<std::string> result;
+std::vector<std::string> split(const std::string& str, char delimiter);
 
-    auto position = str.find(delimiter);
-    unsigned int i = 0;
+/**
+ * symbols acceptable for converting to number
+ */
+bool acceptableValues(char ch);
 
-    while (position != std::string::npos)
-    {
-        auto substr = str.substr(i, position - i);
-        if (!substr.empty())
-        {
-            result.push_back(substr);
-        }
-        i = position + 1;
+/**
+ * Calculate median of input vector
+ */
+double median(const std::vector<int>& input);
 
-        position = str.find(delimiter, i);
-    }
+/**
+ * Check if @a str contains @a searchPattern
+ */
+bool containsAll(const std::string& str, const std::string& searchPattern);
 
-    std::string last = str.substr(i, std::min(position, str.size()) - i + 1);
-    if(!last.empty())
-    {
-        result.push_back(last);
-    }
-
-    return result;
-}
 
 /**
  * Convert str to T
@@ -58,20 +48,12 @@ T convertTo (const std::string &str)
 }
 
 /**
- * symbols acceptable for converting to number
- */
-bool acceptableValues(char ch)
-{
-    return std::isdigit(ch) || ch == ',' || ch == '.';
-}
-
-/**
  * convert string to vector of T
  * @param str - string containing numbers
  * @param delimiter - how values are splitted
  */
 template <class T>
-inline std::vector<T> parseNumbers(const std::string& str, char delimiter)
+std::vector<T> parseNumbers(const std::string& str, char delimiter)
 {
     std::vector<T> result;
 
@@ -91,60 +73,12 @@ inline std::vector<T> parseNumbers(const std::string& str, char delimiter)
  * Join all elements of input vector
  */
 template <class T>
-inline std::string vector2String(const std::vector<T>& input, std::string delimiter = "")
+std::string vector2String(const std::vector<T>& input, const std::string& delimiter = "")
 {
     std::stringstream stream;
     std::copy(input.begin(), input.end(), std::ostream_iterator<T>(stream, delimiter.c_str()));
 
     return stream.str();
-}
-
-/**
- * Calculate median of input vector
- */
-inline double median(const std::vector<int>& input)
-{
-    int size = input.size();
-    if (size == 0)
-    {
-        return 0;
-    }
-    std::vector<int> inputCopy(input);
-    std::sort(inputCopy.begin(), inputCopy.end());
-
-    double median = 0;
-
-    if(size % 2 == 0)
-    {
-        int d = inputCopy[(size/2)] + inputCopy[(size/2) -1];
-        median = d/2;
-    }
-    else
-    {
-        median = inputCopy[size/2];
-    }
-
-    return median;
-}
-
-/**
- * Check if @a str contains @a searchPattern
- */
-inline bool containsAll(const std::string& str, const std::string& searchPattern)
-{
-    std::string sortedStr(str);
-    std::string pattern(searchPattern);
-
-    std::sort(sortedStr.begin(), sortedStr.end());
-    std::sort(pattern.begin(), pattern.end());
-
-    std::string intersection;
-
-    std::set_intersection(sortedStr.begin(), sortedStr.end(),
-                          pattern.begin(), pattern.end(),
-                          std::back_inserter(intersection));
-
-    return intersection.size() == pattern.size();
 }
 
 /**
