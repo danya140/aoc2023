@@ -46,6 +46,48 @@ inline std::vector<std::string> split(const std::string& str, char delimiter)
 }
 
 /**
+ * Convert str to T
+ */
+template <typename T>
+T convertTo (const std::string &str)
+{
+    std::istringstream ss(str);
+    T num;
+    ss >> num;
+    return num;
+}
+
+/**
+ * symbols acceptable for converting to number
+ */
+bool acceptableValues(char ch)
+{
+    return std::isdigit(ch) || ch == ',' || ch == '.';
+}
+
+/**
+ * convert string to vector of T
+ * @param str - string containing numbers
+ * @param delimiter - how values are splitted
+ */
+template <class T>
+inline std::vector<T> parseNumbers(const std::string& str, char delimiter)
+{
+    std::vector<T> result;
+
+    std::vector<std::string> splittedString = split(str, delimiter);
+    for (const std::string& part : splittedString)
+    {
+        if (std::all_of(part.begin(),  part.end(), &acceptableValues))
+        {
+            result.push_back(convertTo<T>(part));
+        }
+    }
+
+    return result;
+}
+
+/**
  * Join all elements of input vector
  */
 template <class T>

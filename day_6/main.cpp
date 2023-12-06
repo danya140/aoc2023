@@ -57,11 +57,11 @@ int main()
 
     std::vector<std::string> input = readInput();
     std::vector<std::pair<long, long>> races;
-    std::vector<std::string> timeParts = split(input[0], ' ');
-    std::vector<std::string> distanceParts = split(input[1], ' ');
-    for (int i = 1; i < timeParts.size(); ++i)
+    std::vector<long> times = parseNumbers<long>(input[0], ' ');
+    std::vector<long> distances = parseNumbers<long>(input[1], ' ');
+    for (int i = 0; i < times.size(); ++i)
     {
-        std::pair<long, long> pair = std::make_pair(std::stol(timeParts[i]), std::stol(distanceParts[i]));
+        std::pair<long, long> pair = std::make_pair(times[i], distances[i]);
         races.push_back(pair);
     }
 
@@ -69,10 +69,10 @@ int main()
 
     std::string time;
     std::string distance;
-    for (int i = 1; i < timeParts.size(); ++i)
+    for (int i = 0; i < times.size(); ++i)
     {
-        time += timeParts[i];
-        distance += distanceParts[i];
+        time += std::to_string(times[i]);
+        distance += std::to_string(distances[i]);
     }
 
     std::cout << "Answer 2: " << findWinningVariants(std::stol(time), std::stol(distance)) << std::endl;

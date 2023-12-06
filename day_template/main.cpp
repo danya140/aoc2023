@@ -27,7 +27,10 @@ int main()
     START_TIMER(point_1)
 
     std::vector<std::string> input = readInput();
-    std::cout << "Answer: " << std::endl;
+
+    std::cout << "Answer part 1: " << std::endl;
+
+    std::cout << "Answer part 2: " << std::endl;
 
     STOP_TIMER(point_1)
     return 0;
