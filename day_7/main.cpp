@@ -4,7 +4,7 @@
 
 #include "helpers.h"
 
-const char* INPUT = "input_example.txt";
+const char* INPUT = "input.txt";
 
 enum HandType {
     HIGH_CARD,
@@ -114,7 +114,7 @@ public:
         int maxPair = 0;
         for (std::pair<char, int> pair : cards)
         {
-            if (pair.second > 1)
+            if (pair.second == 2)
             {
                 pairCount ++;
             }
@@ -138,15 +138,16 @@ public:
                 {
                     continue;
                 }
-                jokerCards[pair.first] = jokerCards[pair.first] + jokerCount;
+                jokerCards[pair.first] = jokerCards[pair.first] + jokerCards['J'];
+                jokerCards.erase('J');
 
                 int jokerPairCount = 0;
                 int jokerMaxPair = 0;
                 for (std::pair<char, int> jokerPair : jokerCards)
                 {
-                    if (jokerPair.second / 2 > 0)
+                    if (jokerPair.second == 2)
                     {
-                        jokerPairCount += jokerPair.second / 2;
+                        jokerPairCount ++;
                     }
 
                     if (jokerMaxPair < jokerPair.second)
@@ -232,9 +233,9 @@ int main()
     START_TIMER(point_1)
 
     std::vector<Hand> input = readInput();
-//    std::sort(input.begin(),  input.end());
+    std::sort(input.begin(),  input.end());
 
-//    std::cout << "Answer part 1: " << countWinnings(input) << std::endl;
+    std::cout << "Answer part 1: " << countWinnings(input) << std::endl;
 
     for (int i = 0; i < input.size(); ++i)
     {
