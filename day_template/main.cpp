@@ -2,7 +2,7 @@
 
 #include "helpers.h"
 
-const char* INPUT = "input.txt";
+const char* INPUT = "input_example.txt";
 
 std::vector<std::string> readInput()
 {

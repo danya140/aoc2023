@@ -11,11 +11,11 @@ endmacro()
 
 
 macro(add_inputs)
-    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/input.txt")
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input.txt ${CMAKE_CURRENT_BINARY_DIR}/input.txt)
-    endif ()
+    file(GLOB FILES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR}/ ${CMAKE_CURRENT_SOURCE_DIR}/input*.txt)
 
-    if (EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/input_example.txt")
-        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/input_example.txt ${CMAKE_CURRENT_BINARY_DIR}/input_example.txt)
-    endif ()
+    foreach(FILE ${FILES})
+        get_filename_component(FILE_NAME ${FILE} NAME)
+        configure_file(${CMAKE_CURRENT_SOURCE_DIR}/${FILE_NAME} ${CMAKE_CURRENT_BINARY_DIR}/${FILE_NAME})
+    endforeach()
+
 endmacro()
