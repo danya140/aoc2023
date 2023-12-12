@@ -225,7 +225,7 @@ std::vector<Coordinate> getVertices(std::vector<Row> map, Coordinate start)
     return result;
 }
 
-long getArea(std::vector<Coordinate> vertices)
+long getArea(const std::vector<Coordinate>& vertices)
 {
     long area = 0;
 
@@ -241,7 +241,7 @@ long getArea(std::vector<Coordinate> vertices)
     return area;
 }
 
-long smartSolution(std::vector<Row> input)
+long smartSolution(const std::vector<Row>& input)
 {
     Coordinate start = findStart(input);
     std::vector<Row> map = replaceStart(input, start);
@@ -267,7 +267,6 @@ int main()
     test.push_back(std::make_pair(4,5));
     test.push_back(std::make_pair(7,8));
     long area = getArea(test);
-
     assert(area == 3);
 
     std::cout << "Answer part 2: " << smartSolution(input) << std::endl;
