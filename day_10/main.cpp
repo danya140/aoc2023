@@ -104,12 +104,12 @@ std::vector<Row> replaceStart(std::vector<Row> input, Coordinate start)
         bottom = getDirection(input[start.second + 1][start.first]);
     }
 
-    bool leftConnected = left.second == RIGHT;
+    bool leftConnected = left.second == RIGHT || left.first == RIGHT;
     bool topConnected = top.second == BOTTOM;
     bool rightConnected = right.first == LEFT;
-    bool bottomConnected = bottom.first == TOP;
+    bool bottomConnected = bottom.first == TOP || bottom.second == TOP;
 
-    char startReplacement;
+    char startReplacement = '+';
     if(leftConnected && rightConnected)
     {
         startReplacement = '-';
@@ -135,6 +135,7 @@ std::vector<Row> replaceStart(std::vector<Row> input, Coordinate start)
         startReplacement = 'F';
     }
 
+    assert(startReplacement != '+');
     result[start.second][start.first] = startReplacement;
     return result;
 }
@@ -162,7 +163,7 @@ Coordinate nextStep(Coordinate current, Direction direction)
     return next;
 }
 
-long findFurthestPoint(std::vector<Row> input)
+long findFurthestPoint(const std::vector<Row>& input)
 {
     long result = 0;
     Coordinate start = findStart(input);
@@ -193,6 +194,66 @@ long findFurthestPoint(std::vector<Row> input)
     return result/2;
 }
 
+std::vector<Coordinate> getVertices(std::vector<Row> map, Coordinate start)
+{
+    std::vector<Coordinate> result;
+    Coordinate current = start;
+    Coordinate previous = current;
+    do
+    {
+        PipeDirection currentDirection = getDirection(map[current.second][current.first]);
+
+        Direction nextDirection = currentDirection.first;
+        Coordinate next = nextStep(current, nextDirection);
+        if (next == previous)
+        {
+            nextDirection = currentDirection.second;
+            next = nextStep(current, nextDirection);
+        }
+
+        char currentChar = map[current.second][current.first];
+        if (currentChar == '7' || currentChar == 'F' || currentChar == 'L' || currentChar == 'J')
+        {
+            result.push_back(current);
+        }
+
+        previous = current;
+        current = next;
+
+    } while (current != start);
+
+    return result;
+}
+
+long getArea(std::vector<Coordinate> vertices)
+{
+    long area = 0;
+
+    for (int i = 0; i < vertices.size(); ++i)
+    {
+        long index = (i + 1) % vertices.size();
+        Coordinate coordinate = vertices[i];
+        Coordinate next = vertices[index];
+        area += coordinate.first * next.second - coordinate.second * next.first;
+    }
+
+    area = std::abs(area) / 2;
+    return area;
+}
+
+long smartSolution(std::vector<Row> input)
+{
+    Coordinate start = findStart(input);
+    std::vector<Row> map = replaceStart(input, start);
+
+    std::vector<Coordinate> vertices = getVertices(map, start);
+    long totalPoints = findFurthestPoint(input) * 2;
+    long area = getArea(vertices);
+
+    long result = area - totalPoints/2 + 1;
+    return result;
+}
+
 int main()
 {
     START_TIMER(point_1)
@@ -201,7 +262,15 @@ int main()
 
     std::cout << "Answer part 1: " << findFurthestPoint(input) << std::endl;
 
-    std::cout << "Answer part 2: " << std::endl;
+    std::vector<Coordinate> test;
+    test.push_back(std::make_pair(2,1));
+    test.push_back(std::make_pair(4,5));
+    test.push_back(std::make_pair(7,8));
+    long area = getArea(test);
+
+    assert(area == 3);
+
+    std::cout << "Answer part 2: " << smartSolution(input) << std::endl;
 
     STOP_TIMER(point_1)
     return 0;
