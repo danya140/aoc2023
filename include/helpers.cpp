@@ -30,7 +30,7 @@ std::vector<std::string> split(const std::string& str, char delimiter)
 
 bool acceptableValues(char ch)
 {
-    return std::isdigit(ch) || ch == ',' || ch == '.';
+    return std::isdigit(ch) || ch == ',' || ch == '.' || ch == '-';
 }
 
 double median(const std::vector<int>& input)
